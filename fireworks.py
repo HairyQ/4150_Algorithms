@@ -35,8 +35,24 @@ def greedy_decision(dist_list, num_shells, d):
         return True
     return False
 
-output_list = []
-for scenario in scenarios:
+def binary_search(lo, hi, scenario):
+    if hi - lo == 1:
+        if greedy_decision(launcher_distances, scenario, hi):
+            return hi
+        else:
+            return lo
     
+    mid = int((hi + lo) / 2)
+    
+    if greedy_decision(launcher_distances, scenario, mid):
+        return binary_search(mid, hi, scenario)
+    else:
+        return binary_search(lo, mid, scenario)
 
-print(greedy_decision(launcher_distances, scenarios[0], 2))
+output = ''
+for scenario in scenarios:
+    output += str(binary_search(1, max_dist, scenario)) + '\n'
+
+print(output[:-1])
+
+exit()
